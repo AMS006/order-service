@@ -11,17 +11,12 @@ const addressSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
-    house: {
+    addressLine1: {
         type: String,
         required: true,
         trim: true,
     },
-    area: {
-        type: String,
-        required: true,
-        trim: true,
-    },
-    landmark: {
+    addressLine2: {
         type: String,
         trim: true,
     },
