@@ -1,17 +1,75 @@
 import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema({
-    name: String,
-    email: String,
-    address: String,
-    order: Array,
-    total: Number,
-    status: {
+    orderId: {
         type: String,
-        default: "pending",
+        trim: true,
     },
-    date: {
+    userId: {
+        type: String,
+        required: true,
+    },
+    userEmail: {
+        type: String,
+        required: true,
+    },
+    restaurantId: {
+        type: String,
+        required: true,
+    },
+    restaurantName: {
+        type: String,
+        required: true,
+    },
+    orderItems: {
+        type: Array,
+        required: true,
+    },
+    orderAmount: {
+        type: Number,
+        required: true,
+    },
+    paymentMethod: {
+        type: String,
+        required: true,
+    },
+    paymentStatus: {
+        type: String,
+        required: true,
+    },
+    orderStatus: {
+        type: String,
+        enum: ["Ordered", "Preparing", "Out for delivery", "Delivered", "Cancelled"],
+        default: "Ordered",
+        required: true,
+    },
+    address: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Address',
+        required: true,
+    },
+    orderDate: {
         type: Date,
-        default: Date.now,
+        required: true,
+    },
+    isDelivered: {
+        type: Boolean,
+        default: false,
+    },
+    deliveryDate: {
+        type: Date,
+    },
+    isCancelled: {
+        type: Boolean,
+        default: false,
+    },
+    cancelDate: {
+        type: Date,
+    },
+    cancelReason: {
+        type: String,
     },
 });
+
+const OrderModal = mongoose.model("Order", orderSchema);
+export default OrderModal;
