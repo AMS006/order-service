@@ -8,3 +8,13 @@ export interface CouponType {
     validTill: Date;
     isActive: boolean;
 }
+
+export interface Filters {
+    couponCode?: { $regex: string; $options: string };
+
+}
+
+export interface Pagination {
+    page: number;
+    limit: number;
+}

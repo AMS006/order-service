@@ -20,11 +20,23 @@ router.post(
 router.get(
     "/",
     authenticate,
-    asyncWrapper(orderController.getOrder)
+    asyncWrapper(orderController.getOrders)
 );
 
-router.put(
-    "/:id",
+router.get(
+    "/details/:id",
+    authenticate,
+    asyncWrapper(orderController.getOrderById)
+);
+
+router.patch(
+    "/confirm/:id",
+    authenticate,
+    asyncWrapper(orderController.confirmOrder)
+)
+
+router.patch(
+    "/status/:id",
     authenticate,
     asyncWrapper(orderController.updateOrderStatus)
 );

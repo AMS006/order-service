@@ -9,6 +9,10 @@ const orderSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    customerName: {
+        type: String,
+        required: true,
+    },
     userEmail: {
         type: String,
         required: true,
@@ -39,11 +43,15 @@ const orderSchema = new mongoose.Schema({
     },
     orderStatus: {
         type: String,
-        enum: ["Ordered", "Preparing", "Out for delivery", "Delivered", "Cancelled"],
+        enum: ["Ordered", "Prepared", "Out for delivery", "Delivered", "Cancelled"],
         default: "Ordered",
         required: true,
     },
-    address: {
+    isConfirmed: {
+        type: Boolean,
+        default: false,
+    },
+    addressId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Address',
         required: true,
@@ -69,7 +77,11 @@ const orderSchema = new mongoose.Schema({
     cancelReason: {
         type: String,
     },
-});
+},
+    {
+        timestamps: true,
+    }
+);
 
 const OrderModal = mongoose.model("Order", orderSchema);
 export default OrderModal;

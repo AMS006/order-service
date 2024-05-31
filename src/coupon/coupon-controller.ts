@@ -1,6 +1,7 @@
 import { Response } from "express";
 import { AuthRequest } from "../common/types";
 import { CouponService } from "./coupon-service";
+import { Filters } from "./coupon-type";
 
 export class CouponController {
     constructor(private couponService: CouponService) { }
@@ -12,7 +13,18 @@ export class CouponController {
     }
 
     getCoupons = async (req: AuthRequest, res: Response) => {
-        const response = await this.couponService.getCoupons();
+        const { search } = req.query;
+        const filters: Filters = {};
+
+        if (search) filters.couponCode = { $regex: search as string, $options: "i" };
+        const pagination = {
+            page: parseInt(req.query.page as string) || 1,
+            limit: parseInt(req.query.limit as string) || 10,
+        };
+
+        const response = await this.couponService.getCoupons(filters, pagination);
+
+
         res.status(200).json(response);
     }
 

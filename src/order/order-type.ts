@@ -25,3 +25,14 @@ export interface OrderType {
     createdAt: Date;
     updatedAt: Date;
 }
+
+export interface Filters {
+    customerName?: { $regex: string; $options: string };
+    orderStatus?: string;
+    restaurantId?: string;
+}
+
+export interface Pagination {
+    page: number;
+    limit: number;
+}
