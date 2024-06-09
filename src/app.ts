@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import addressRouter from '../src/address/address-routes'
 import orderRouter from '../src/order/order-routes'
 import couponRouter from '../src/coupon/coupon-routes'
+import reviewRouter from '../src/review/review-routes'
 import cors from "cors";
 
 
@@ -30,6 +31,7 @@ app.get("/", (req: Request, res: Response) => {
 app.use("/address", addressRouter);
 app.use("/order", orderRouter);
 app.use('/coupon', couponRouter);
+app.use('/review', reviewRouter);
 
 app.use(globalErrorHandler);
 

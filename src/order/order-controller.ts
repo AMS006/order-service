@@ -15,9 +15,10 @@ export class OrderController {
             res.status(500).json({ message: error.message });
         }
     }
+
     getOrders = async (req: AuthRequest, res: Response) => {
         try {
-            const userId = String(req.auth.sub);
+
             const { search, orderStatus, tenantId } = req.query;
             const filters: Filters = {};
 
@@ -36,11 +37,29 @@ export class OrderController {
                 limit: parseInt(req.query.limit as string) || 10,
             };
 
-            const response = await this.orderService.getOrders(userId, filters, pagination);
+            const response = await this.orderService.getOrders(filters, pagination);
             res.status(200).json(response);
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
+    }
+
+    getUserOrders = async (req: AuthRequest, res: Response) => {
+        const userId = req.auth.sub;
+        if (!userId) return res.status(400).json({ message: "User Id is required" });
+
+        const filters: Filters = {
+            userId
+        }
+
+        const pagination = {
+            page: parseInt(req.query.page as string) || 1,
+            limit: parseInt(req.query.limit as string) || 10,
+        };
+
+        const response = await this.orderService.getOrders(filters, pagination);
+
+        res.status(200).json(response);
     }
 
 
@@ -60,6 +79,17 @@ export class OrderController {
         try {
             const id = req.params.id;
             const response = await this.orderService.confirmOrder(id);
+            res.status(200).json(response);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+
+    cancelOrder = async (req: AuthRequest, res: Response) => {
+        try {
+            const id = req.params.id;
+            const { cancelReason } = req.body;
+            const response = await this.orderService.cancelOrder(id, cancelReason);
             res.status(200).json(response);
         } catch (error) {
             res.status(500).json({ message: error.message });
@@ -88,7 +118,23 @@ export class OrderController {
 
     totalOrderSale = async (req: AuthRequest, res: Response) => {
         try {
-            const response = await this.orderService.totalOrderSale();
+            const role = req.auth.role;
+            console.log(req.auth);
+            const tenant = req.auth?.tenant;
+            const response = await this.orderService.totalOrderSale(role, String(tenant?.id));
+            console.log(response, "response");
+            res.status(200).json(response);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+
+    getRecentOrders = async (req: AuthRequest, res: Response) => {
+        try {
+            const role = req.auth.role;
+            const tenant = req.auth?.tenant;
+            const response = await this.orderService.getRecentOrders(role, String(tenant?.id));
+
             res.status(200).json(response);
         } catch (error) {
             res.status(500).json({ message: error.message });
@@ -97,9 +143,10 @@ export class OrderController {
 
     getWeeklySales = async (req: AuthRequest, res: Response) => {
         try {
-            const startDate = new Date();
-            startDate.setDate(startDate.getDate() - 7);
-            const response = await this.orderService.getSalesReportForChart(startDate, new Date());
+            const role = req.auth.role;
+            const tenant = req.auth?.tenant;
+
+            const response = await this.orderService.getSalesReportForChart(role, String(tenant?.id));
             res.status(200).json(response);
         } catch (error) {
             res.status(500).json({ message: error.message });

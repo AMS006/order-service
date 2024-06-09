@@ -17,10 +17,22 @@ router.post(
     asyncWrapper(orderController.createOrder)
 );
 
+router.post(
+    "/cancel/:id",
+    authenticate,
+    asyncWrapper(orderController.cancelOrder)
+)
+
 router.get(
     "/",
     authenticate,
     asyncWrapper(orderController.getOrders)
+);
+
+router.get(
+    "/user",
+    authenticate,
+    asyncWrapper(orderController.getUserOrders)
 );
 
 router.get(
@@ -48,16 +60,23 @@ router.delete(
 );
 
 router.get(
-    "/total-sale",
+    "/total-order-sale",
     authenticate,
-    canAccess(["admin"]),
+    canAccess(["admin", "manager"]),
     asyncWrapper(orderController.totalOrderSale)
 );
 
 router.get(
-    "/weekly-sales",
+    "/recent-orders",
     authenticate,
-    canAccess(["admin"]),
+    canAccess(["admin", "manager"]),
+    asyncWrapper(orderController.getRecentOrders)
+)
+
+router.get(
+    "/sales-report",
+    authenticate,
+    canAccess(["admin", "manager"]),
     asyncWrapper(orderController.getWeeklySales)
 );
 

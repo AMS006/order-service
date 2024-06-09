@@ -21,7 +21,6 @@ export interface OrderType {
     deliveryTime: string;
     deliveryType: string;
     deliveryStatus: string;
-
     createdAt: Date;
     updatedAt: Date;
 }
@@ -30,6 +29,7 @@ export interface Filters {
     customerName?: { $regex: string; $options: string };
     orderStatus?: string;
     restaurantId?: string;
+    userId?: string;
 }
 
 export interface Pagination {

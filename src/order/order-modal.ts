@@ -77,6 +77,13 @@ const orderSchema = new mongoose.Schema({
     cancelReason: {
         type: String,
     },
+    diccountPercent: {
+        type: Number,
+    },
+    isReviewAdded: {
+        type: Boolean,
+        default: false,
+    }
 },
     {
         timestamps: true,

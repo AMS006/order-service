@@ -3,13 +3,17 @@ import { Request } from "express";
 export type AuthCookie = {
   accessToken: string;
 };
-
+export interface Tenant {
+  id: string;
+  name: string;
+  address: string;
+}
 export interface AuthRequest extends Request {
   auth: {
     sub: string;
     role: string;
     id?: string;
-    tenant: string;
+    tenant: Tenant;
   };
 }
 
